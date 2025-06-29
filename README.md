@@ -34,38 +34,14 @@ Advisor: Prof. Li
 
 There are two objectives in this optimization problem. `Z_shade` is the objective to maximize the total shaded area provided by the new trees. 
 
-$$
-\text{Maximize} \quad \text{Z}_{shade} = \sum_i S_i x_i - \sum_{i < j} O_{ij} x_i x_j
-$$
+![Z_shade equation](../images/readme/1.png)
 
 `Z_coolwalk` is the objective to maximize the pedestrian benefit, which is modified based on the "CoolWalkability" index from [this paper](nature.com/articles/s41598-025-97200-2) on Scientific Reports. It measures a city's capability to provide shaded walking routes by quantifying how much pedestrian exposure to sun can be reduced through optimal shade-aware routing compared to the least shaded paths, reflecting how well the urban form supports cool, active mobility. It first computes the experienced path length $\lambda_m$ by amplifying the unshaded length of an edge by a weighting parameter $\alpha$ that represents how much more pedestrians prefer shaded paths over unshaded ones. Then, for a given set of OD pairs, it calculates the shortest path lengths under different shading conditions (fully unshaded, fully shaded, and shaded by the selected trees) to quantify the walking cooling benefit of the new trees.
 
-$$
-\text{Maximize} \quad \text{Z}_{coolwalk} ^ \alpha = 
-\frac{
-    \displaystyle\sum_{m \in V_o,\, n \in V_{d}(m)} 
-    w_{mn} \left[
-        \Lambda_{m \rightarrow n}^{\alpha, *}(0)
-        - \Lambda_{m \rightarrow n}^{\alpha, *}(\mathcal{T})
-    \right]
-}{
-    \displaystyle\sum_{m \in V_o,\, n \in V_{d}(m)}
-    w_{mn} \left[
-        \Lambda_{m \rightarrow n}^{\alpha, *}(0)
-        - \Lambda_{m \rightarrow n}^{\alpha, *}(1)
-    \right]
-}
-$$
-$$
-\lambda_m = \lambda_m^{shaded} + \alpha \times \lambda_m^{sun}
-$$
+![Z_coolwalk equation](../images/readme/2.png)
 
 Subject to:
-$$
-\sum_i x_i = N \\
-\alpha \geq 0 \\
-x_i \in \{0, 1\} \quad \forall i
-$$
+![Constraints](../images/readme/3.png)
 
 Where:
 
@@ -83,6 +59,8 @@ Where:
 - $\Lambda_{m \rightarrow n}^{\alpha, *}(0)$ is the shortest path length from $m$ to $n$ when edges are fully unshaded (i.e., no shaded length)
 - $\Lambda_{m \rightarrow n}^{\alpha, *}(1)$ is the shortest path length from $m$ to $n$ when edges are fully shaded (i.e., all shaded length)
 - $\Lambda_{m \rightarrow n}^{\alpha, *}(\mathcal{T})$ is the shortest path length from $m$ to $n$ when edges are shaded by a selected set of new trees $\mathcal{T}$
+
+The equations above can also be found in [opt.ipynb](opt.ipynb).
 
 #### Spatial Optimization Model
 
@@ -123,4 +101,5 @@ We have run the optimization for three different values of $\alpha$: 1.01, 2.0, 
 
 It took about 6 hours to run the optimization tasks for 6 scenarios in total, when pop_size=30 (larger can produce more accurate results but raise resource cost) and 8 CPU cores in parallel. 
 
+#### Results
 For detailed visualization of the results, please refer to the [vis.ipynb](vis.ipynb) notebook.
