@@ -1,6 +1,7 @@
 # *Framework* of Optimizing Street Tree Placement for Maximum Shade and Pedestrian Benefit
 
 Author: Frank Chen
+
 Advisor: Prof. Li, Prof. Delmelle
 
 ## Introduction
