@@ -138,3 +138,8 @@ See [opt.ipynb](opt.ipynb) for details.
 
 #### Results
 For detailed visualization of the results, please refer to the [vis.ipynb](vis.ipynb) notebook.
+
+## Next Steps
+
+- Increase pop_size and re-run the optimization tasks to get more accurate results.
+- Increase N_select because the tradeoff curve is not smooth enough when N_select is small (e.g. 500).
