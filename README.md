@@ -100,14 +100,16 @@ NSGA-II (Non-dominated Sorting Genetic Algorithm II) is a widely used evolutiona
 
 #### Shade Computation
 
-We first use GPU to compute the shade for each potetial tree site. We use the LiDAR-derived digital Surface Model (DSM) to compute the shade. By creating a patch for each potential tree site, we can compute:
+I first extract the digital surface model (DSM) using LiDAR data, then mask the pedestrian area dsm using curb lines and land use data. I then exclude the buffer area of utility poles, postboxes, existing trees, street corners, and buildings to avoid conflicts with the new trees. 
+
+I assign the tree species to new tree sites by using their closest existing trees information. After simulation of tree planting using the average height and canopy width of the species, I use GPU to compute the shade for each potetial tree site. By creating a patch for each potential tree site, I can compute:
 
 - S_original: The original shade of the patch using the DSM.
 - S_planted: The shade of the patch after planting a tree using `apply_tree_to_dsm()`.
 - S_unique: The unique shade of the patch after planting a tree, which is the difference between S_planted and S_original.
 - S_unique_on_edge: The unique shade of the patch on the edges of the road network graph, which is the vectorized unique shade that intersects with the road network edge gdf.
 
-By moving two patches using their coordinates, we can compute the overlap between two potential tree sites:
+By moving two patches using their coordinates, I can compute the overlap between two potential tree sites:
 
 - S_overlap: The overlap shade between two patches, which is the intersection of their unique shades.
 - S_overlap_on_edge: The overlap shade on the edges of the road network graph, which is the vectorized overlap shade that intersects with the road network edge gdf.
@@ -116,7 +118,7 @@ See [shade.ipynb](shade.ipynb) for details.
 
 #### Coolwalkability Index
 
-Wwe use the ADVAN foot traffic data of July, 2024 (67,000+ records) to create a set of origin-destination (OD) pairs. Here are the steps:
+I use the ADVAN foot traffic data of July, 2024 (67,000+ records) to create a set of origin-destination (OD) pairs. Here are the steps:
 
 - Create Graph for pedestrian network using data from [DVRPC](https://www.arcgis.com/home/item.html?id=5959ca82848f4833a65cd90ef991c080)
 - Load the ADVAN foot traffic data to the nodes in the Graph
@@ -125,13 +127,13 @@ Wwe use the ADVAN foot traffic data of July, 2024 (67,000+ records) to create a 
 
 ![W](images/readme/4.png)
 
-- For each OD pair, we then compute the top 5 shortest paths using the `networkx.shortest_simple_paths()` function, we will use these paths to select the best path after graph update. Because people may not want to choose a fully-shaded long route, so we keep them to choose in a reasonable choice pool. This also saves computer resources.
+- For each OD pair, I then compute the top 5 shortest paths using the `networkx.shortest_simple_paths()` function, I will use these paths to select the best path after graph update. Because people may not want to choose a fully-shaded long route, so I keep them to choose in a reasonable choice pool. This also saves computer resources.
 
 See [shortest_path.ipynb](shortest_path.ipynb) for details.
 
 #### Optimization
 
-We have run the optimization for three different values of $\alpha$: 1.01, 2.0, and 100.0, which represent different levels of perceptions of the unshaded walking experience. We also tested the optimization with two different tree selection sizes: 500 and 1000. The study area is limited to Center City District, Philadelphia, and sampled the 44,818 OD pairs from 158,652 pairs, due to the capability of the PC.
+I have run the optimization for three different values of $\alpha$: 1.01, 2.0, and 100.0, which represent different levels of perceptions of the unshaded walking experience. I also tested the optimization with two different tree selection sizes: 500 and 1000. The study area is limited to Center City District, Philadelphia, and sampled the 44,818 OD pairs from 158,652 pairs, due to the capability of the PC.
 
 It took about 6 hours to run the optimization tasks for 6 scenarios in total, when pop_size=30 (larger can produce more accurate results but raise resource cost) and 8 CPU cores in parallel. 
 
