@@ -4,6 +4,12 @@ Author: Frank Chen
 
 Advisor: Prof. Li, Prof. Delmelle
 
+## Abstract
+
+Urban heat poses a significant threat to public health. Although street trees are recognized as an effective mitigation strategy through shading, their placement is often suboptimal for maximizing pedestrian thermal comfort. Conventional urban forestry strategies, which typically prioritize canopy coverage or spatial equity, often fail to integrate dynamic pedestrian activity, thereby missing opportunities to maximize public health co-benefits. To address this gap, this study develops and applies a novel multi-objective spatial optimization framework for the strategic placement of street trees. The framework aims to simultaneously maximize two competing objectives: (1) the total unique (non-overlapping) shaded area and (2) a "CoolWalkability" index that quantifies the potential reduction in sun exposure along pedestrian routes.
+
+The proposed framework integrates high-resolution LiDAR data, anonymized mobile device location data, and municipal infrastructure constraints to define a realistic solution space. A GPU-accelerated ray-tracing algorithm is employed to efficiently simulate unique and overlapping shade footprints for thousands of potential planting sites. The resulting complex, combinatorial optimization problem is solved using the NSGA-II (Non-dominated Sorting Genetic Algorithm II), a metaheuristic algorithm well-suited for generating a Pareto front of optimal trade-off solutions. Applied to a case study in Philadelphia, PA, the model reveals the explicit trade-offs between environmental cooling and public health objectives. This provides urban planners and policymakers with a data-driven decision-support tool to select context-specific planting strategies that align with diverse policy goals, ranging from maximizing city-wide canopy to enhancing thermal comfort in high-traffic pedestrian corridors.
+
 ## Introduction
 
 - Extreme heat is one of the leading environmental causes of mortality worldwide.
